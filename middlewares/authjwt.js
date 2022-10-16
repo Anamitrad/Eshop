@@ -3,7 +3,7 @@
  * the access token passed in the request header
  */
  const jwt = require("jsonwebtoken");
- const secretConfig = require("../configs/auth.config");
+ const secretConfig = require("../config/auth.config");
  const User = require("../models/user.model");
  const constants = require("../utils/constants");
  

@@ -10,6 +10,11 @@ let mongoose = require('mongoose')
 let User= require('./models/user.model')
 mongoose.connect(dbConfig.DB_URL);
 
+/**
+ * Register the MW to read the JSON request body
+ */
+ app.use(express.json());
+
 const db = mongoose.connection;
 
 db.on('error', () => {
@@ -38,7 +43,6 @@ async function init(){
     }
     try{
         let user = await User.create({
-            id:1,
             name:'admin',
             email:'admin@admin.com',
             password:bcrypt.hashSync('admin',8),
@@ -50,3 +54,15 @@ async function init(){
         console.log("error while creating admin ", err.message);
     }
 }
+/**
+ * Plug in the routes
+ */
+ require("./routes/auth.routes")(app);
+ require("./routes/address.routes")(app);
+ 
+ /**
+  * Start the server
+  */
+ app.listen(serverConfig.PORT, () => {
+     console.log(`Server started on the port no : ${serverConfig.PORT}`);
+ })

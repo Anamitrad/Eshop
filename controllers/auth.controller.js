@@ -1,12 +1,13 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
-
+const jwt = require("jsonwebtoken");
+const authSecret = require("../config/auth.config");
 exports.signup = async (req,res)=>{
     let userObj={};
-    let id= User.find({}).count() +1;
-    userObj.id = req.body.id;
+    // let id= User.find({}).count() +1;
+    // userObj.id = id;
     userObj.email = req.body.email;
-    req.body.name ?userObj.name = req.body.name:'';
+    userObj.name = req.body.name;
     req.body.first_name ?userObj.first_name = req.body.first_name:'';
     req.body.last_name ?userObj.last_name = req.body.last_name:'';
     userObj.password = bcrypt.hashSync(req.body.password, 8);
@@ -19,9 +20,10 @@ exports.signup = async (req,res)=>{
         /**
          * I will have to return back the response
          */
+        console.log(user);
         const userResp ={}
-           userResp.id= user.id
-           userResp.email = user.email
+           userResp.id= user._id;
+           userResp.email = user.email;
            (userObj.first_name)?userResp.first_name = userObj.first_name :'';
            (userObj.last_name)?userResp.last_name = userObj.last_name :'';
            res.status(201).send(userResp);
@@ -29,7 +31,7 @@ exports.signup = async (req,res)=>{
      catch (err) {
         console.log("Error while creating new user ", err.message);
         res.status(500).send({
-            message: "Some internal error happened while inseting new user"
+            message: "Some internal error happened while inserting new user"
         })
     }
 } 
@@ -47,7 +49,7 @@ exports.login = async (req,res)=>{
             "message" : "Password provided is incorrect"
         })
     }
-    const token = jwt.sign({id : user.id},authSecret.secret, {
+    const token = jwt.sign({id : user._id},authSecret.secret, {
         expiresIn : 120
     });
     res.set('x-auth-token',token);
