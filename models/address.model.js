@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const constants= require('../utils/constants');
 const addressSchema = mongoose.Schema({
     city: {
         type: String,

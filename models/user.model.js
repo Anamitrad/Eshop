@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const constants= require('../utils/constants');
 const userSchema = new mongoose.Schema({
-    // id: {
+    // _id: {
     //     type: Number,
     //     required: true,
     //     unique: true

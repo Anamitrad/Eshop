@@ -7,7 +7,7 @@ const constants = require("./utils/constants");
 
 
 let mongoose = require('mongoose')
-let User= require('./models/user.model')
+let Sequence = require('./models/sequence.model')
 mongoose.connect(dbConfig.DB_URL);
 
 /**
@@ -25,40 +25,40 @@ db.on("open", () => {
     /**
      * Write the code to init the db
      */
-    init();
+    // init();
 })
 
-async function init(){
-    try{
-        let adminUser = await User.findOne({role : 'ADMIN'})
-        if(adminUser)
-        {
-            console.log(adminUser);
-            console.log("Admin user already exists");
-            return;
-        }
-    }
-    catch(err){
-        console.log("error while fetching user ", err.message);
-    }
-    try{
-        let user = await User.create({
-            name:'admin',
-            email:'admin@admin.com',
-            password:bcrypt.hashSync('admin',8),
-            role:constants.userTypes.admin
-        })
-        console.log(user);
-    }
-    catch(err){
-        console.log("error while creating admin ", err.message);
-    }
-}
+// async function init(){
+//     try{
+//         let count = await Sequence.find({}).count();
+//         if(count===1)
+//         {
+//             console.log("Sequence created");
+//             return;
+//         }
+//     }
+//     catch(err){
+//         console.log("error while fetching sequence ", err.message);
+//     }
+//     try{
+//         let sequence = await Sequence.create({
+//             users: 0,
+//             address: 0,
+//             products: 0,
+//             orders: 0,
+//         })
+//         console.log(sequence);
+//     }
+//     catch(err){
+//         console.log("error while creating sequence ", err.message);
+//     }
+// }
 /**
  * Plug in the routes
  */
  require("./routes/auth.routes")(app);
  require("./routes/address.routes")(app);
+ require("./routes/product.routes")(app);
  
  /**
   * Start the server
