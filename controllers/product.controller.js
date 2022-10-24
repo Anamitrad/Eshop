@@ -3,9 +3,9 @@ const Product= require('../models/product.model')
 exports.searchAllProducts = async (req, res) => {
     //Verify query object
     const productQueryObj = {
-        category: req.query.category ?? "",
+        category: req.query.category ?? undefined,
         direction: req.query.direction ? req.query.direction.toLowerCase() : "desc",
-        name: req.query.name ?? "",
+        name: req.query.name ?? undefined,
         sortBy: req.query.sortBy ? req.query.sortBy : "_id"
     }
     try {
